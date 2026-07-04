@@ -5,10 +5,22 @@ const cors = require("cors")
 
 const app = express();
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://resume-builder-gen-ai-blue.vercel.app",
+  "https://resume-builder-gen-cv3en1gl1-himanshu001.vercel.app",
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
