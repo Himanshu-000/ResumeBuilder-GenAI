@@ -99,7 +99,11 @@ async function logoutUser(req , res) {
         await Blacklistedtoken.create({token})   
     }
 
-    res.clearCookie("token");
+    res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None"
+});
 
     res.status(200).json({ message : "User Logout succussfully"})
 }catch(err){
